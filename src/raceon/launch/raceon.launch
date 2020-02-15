@@ -16,7 +16,7 @@
             <param name="~fps" value="30" />
         </node>
 
-        <node pkg="raceon" name="pos_estimation" type="pos_estimation.py" output="log">
+        <node pkg="raceon" name="pos_estimation" type="pos_estimation.py" output="screen">
             <param name="~use_compressed_image" value="true" />
             <param name="~scan_line" value="170" />
             <param name="~peak_threshold" value="170" />
