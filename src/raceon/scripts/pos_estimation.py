@@ -106,7 +106,7 @@ class PosEstimator():
         self.pub_pos_track.publish(track_msg)
         
         first_pos = track_msg.left = 0 if line_left == None else int(line_left)
-        self.pub_pos_track.publish(first_pos)
+        self.pub_pos_0.publish(first_pos)
 
         # Evaluate the line position
         if line_left and line_right:
