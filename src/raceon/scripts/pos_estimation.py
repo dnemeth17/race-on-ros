@@ -7,6 +7,7 @@ import rospy
 from sensor_msgs.msg import Image, CompressedImage
 from geometry_msgs.msg import Pose
 from raceon.msg import TrackPosition
+from raceon.msg import IntMsg
 
 # Dependencies for estimation
 import cv2
@@ -43,6 +44,7 @@ class PosEstimator():
             
         self.pub_pos_err = rospy.Publisher(self.topic_name_pos_err, Pose, queue_size=10)
         self.pub_pos_track = rospy.Publisher(self.topic_name_pos_track, TrackPosition, queue_size=10)
+        self.pub_pos_0 = rospy.Publisher("position/0", IntMsg, queue_size=10)
         rospy.spin()
 
     def image_compressed_callback(self, img_msg):
@@ -102,6 +104,10 @@ class PosEstimator():
         track_msg.left = 0 if line_left == None else int(line_left)
         track_msg.right = 0 if line_right == None else int(line_right)
         self.pub_pos_track.publish(track_msg)
+        
+        first_pos = IntMsg()
+        first_pos.number = track_msg.left = 0 if line_left == None else int(line_left)
+        self.pub_pos_track.publish(first_pos)
 
         # Evaluate the line position
         if line_left and line_right:
