@@ -119,21 +119,21 @@ class PosEstimator():
         if line_left and line_right:
             line_pos    = (line_left + line_right ) // 2
             self.track_width = line_right - line_left
-            previous_left = line_left
-            previous_right = line_right
+            self.previous_left = line_left
+            self.previous_right = line_right
             
         elif line_left and not line_right:
-            line_right = previous_right
+            line_right = self.previous_right
             line_pos    = (line_left + line_right ) // 2
-            previous_left = line_left
+            self.previous_left = line_left
             
         elif not line_left and line_right:
-            line_left = previous_left
+            line_left = self.previous_left
             line_pos    = (line_left + line_right ) // 2
-            previous_right = line_right
+            self.previous_right = line_right
         else:
-            if previous_left != -1 and previous_right != -1:
-                line_pos = (previous_left + previous_right ) // 2   
+            if self.previous_left != -1 and self.previous_right != -1:
+                line_pos = (self.previous_left + self.previous_right ) // 2   
             rospy.loginfo("no line")
 
         return line_pos
