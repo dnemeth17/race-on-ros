@@ -128,7 +128,7 @@ class PosEstimator():
         #self.pub_line_left.publish(left_pos)
         #self.pub_line_right.publish(right_pos)
         
-        if self.turning_state == 0 and (line_left < 25 or self.previous_left < 25):
+        if self.turning_state == 0 and ((line_left and line_left < 25) || (not line_left and self.previous_left < 25)):
             self.turning_state = -1
             self.turning_start_right = line_right
         if self.turning_state == -1:
