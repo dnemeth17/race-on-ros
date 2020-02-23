@@ -134,7 +134,8 @@ class PosEstimator():
         if self.turning_state == -1:
             # were coming out of the turn
             if line_right and line_right > self.turning_start_right:
-                self.turning_state = 0
+                #self.turning_state = 0
+                pass
             
         if self.turning_state == -1:
             if not line_right:
