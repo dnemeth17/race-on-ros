@@ -43,10 +43,6 @@ class PosEstimator():
         self.previous_right = 550
         self.error_array = []
         
-        self.turning_state = 0
-        self.turning_start_right = 550
-        self.turning_start_left = 150
-        self.state_buffer = 0
     
     def start(self):
         
@@ -129,46 +125,27 @@ class PosEstimator():
         #self.pub_line_left.publish(left_pos)
         #self.pub_line_right.publish(right_pos)
         
-        self.state_buffer += 1
-        
-        if self.state_buffer > 10:
 
-            if self.turning_state == 0 and ((line_left and line_left < 25) or (not line_left and self.previous_left < 25)):
-                self.turning_state = -1
-                self.turning_start_right = line_right
-            if self.turning_state == -1:
-                # were coming out of the turn
-                if line_right and line_right > self.turning_start_right:
-                    #self.turning_state = 0
-                    pass
-            
-        if self.turning_state == -1:
-            if not line_right:
-                line_right = self.previous_right
-            line_left = line_right - self.track_width
-            line_pos = (line_left + line_right ) // 2
+        # Evaluate the line position
+        if line_left and line_right:
+            line_pos    = (line_left + line_right ) // 2
+            self.track_width = line_right - line_left
+            self.previous_left = line_left
+            self.previous_right = line_right
+
+        elif line_left and not line_right:
+            line_right = self.previous_right
+            line_pos    = (line_left + line_right ) // 2
+            self.previous_left = line_left
+
+        elif not line_left and line_right:
+            line_left = self.previous_left
+            line_pos    = (line_left + line_right ) // 2
             self.previous_right = line_right
         else:
-            # Evaluate the line position
-            if line_left and line_right:
-                line_pos    = (line_left + line_right ) // 2
-                self.track_width = line_right - line_left
-                self.previous_left = line_left
-                self.previous_right = line_right
-
-            elif line_left and not line_right:
-                line_right = self.previous_right
-                line_pos    = (line_left + line_right ) // 2
-                self.previous_left = line_left
-
-            elif not line_left and line_right:
-                line_left = self.previous_left
-                line_pos    = (line_left + line_right ) // 2
-                self.previous_right = line_right
-            else:
-                if self.previous_left != -1 and self.previous_right != -1:
-                    line_pos = (self.previous_left + self.previous_right ) // 2   
-                rospy.loginfo("no line")
+            if self.previous_left != -1 and self.previous_right != -1:
+                line_pos = (self.previous_left + self.previous_right ) // 2   
+            rospy.loginfo("no line")
                 
         
         self.pub_line_left.publish(left_pos)
