@@ -44,7 +44,8 @@ class PosEstimator():
             
         self.pub_pos_err = rospy.Publisher(self.topic_name_pos_err, Pose, queue_size=10)
         self.pub_pos_track = rospy.Publisher(self.topic_name_pos_track, TrackPosition, queue_size=10)
-        self.pub_pos_0 = rospy.Publisher("position/0", Int32, queue_size=10)
+        self.pub_line_left = rospy.Publisher("line/left", Int32, queue_size=10)
+        self.pub_line_right = rospy.Publisher("line/right", Int32, queue_size=10)
         rospy.spin()
 
     def image_compressed_callback(self, img_msg):
@@ -71,7 +72,9 @@ class PosEstimator():
         pos_msg = Pose()
         pos_msg.position.x = line_pos
         self.pub_pos_err.publish(pos_msg)
-        
+    
+    previous_left = -1
+    previous_right = -1
     def pos_estimate(self, I):
 
         # Select a horizontal line in the middle of the image
@@ -105,21 +108,30 @@ class PosEstimator():
         track_msg.right = 0 if line_right == None else int(line_right)
         self.pub_pos_track.publish(track_msg)
         
-        first_pos = track_msg.left = 0 if line_left == None else int(line_left)
-        self.pub_pos_0.publish(first_pos)
+        left_pos = 0 if line_left == None else int(line_left)
+        right_pos = 0 if line_right == None else int(line_right)
+        self.pub_line_left.publish(left_pos)
+        self.pub_line_right.publish(right_pos)
 
         # Evaluate the line position
         if line_left and line_right:
             line_pos    = (line_left + line_right ) // 2
             self.track_width = line_right - line_left
+            previous_left = line_left
+            previous_right = line_right
             
         elif line_left and not line_right:
-            line_pos    = line_left + int(self.track_width / 2)
+            line_right = previous_right
+            line_pos    = (line_left + line_right ) // 2
+            previous_left = line_left
             
         elif not line_left and line_right:
-            line_pos    = line_right - int(self.track_width / 2)
-            
+            line_left = previous_left:
+            line_pos    = (line_left + line_right ) // 2
+            previous_right = line_right
         else:
+            if previous_left != -1 and previous_right != -1:
+                line_pos = (previous_left + previous_right ) // 2   
             rospy.loginfo("no line")
 
         return line_pos
