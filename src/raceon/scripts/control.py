@@ -5,8 +5,6 @@ import rospy
 from geometry_msgs.msg import Pose
 from raceon.msg import AckermannDrive
 
-MAX_CORRECTION_MAGNITUDE = 1000.0
-
 class Controller():
     
     def __init__(self):
@@ -45,11 +43,6 @@ class Controller():
     def control_servo(self, error):
         correction = self.pid(error)
         servo_pos = correction
-
-        if servo_pos > MAX_CORRECTION_MAGNITUDE:
-            servo_pos = MAX_CORRECTION_MAGNITUDE
-        if servo_pos < -MAX_CORRECTION_MAGNITUDE:
-            servo_pos = -MAX_CORRECTION_MAGNITUDE
 
         return servo_pos
 
