@@ -126,7 +126,7 @@ class PosEstimator():
             previous_left = line_left
             
         elif not line_left and line_right:
-            line_left = previous_left:
+            line_left = previous_left
             line_pos    = (line_left + line_right ) // 2
             previous_right = line_right
         else:
