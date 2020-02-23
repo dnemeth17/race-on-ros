@@ -16,9 +16,7 @@ from scipy.signal import find_peaks, butter, filtfilt
 from skimage.color import rgb2gray
 
 
-previous_left = -1
-previous_right = -1
-error_array = []
+
 
 
 class PosEstimator():
@@ -40,6 +38,10 @@ class PosEstimator():
         self.camera_center = rospy.get_param("~camera_center", 320)
         
         self.butter_b, self.butter_a = butter(3, 0.1)
+        
+        self.previous_left = -1
+        self.previous_right = -1
+        self.error_array = []
     
     def start(self):
         
