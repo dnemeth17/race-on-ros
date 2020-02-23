@@ -99,7 +99,7 @@ class PWM(object):
     @duty_cycle.setter
     def duty_cycle(self, value):
         with open(self.path + '/duty_cycle', 'w') as f:
-            f.write('{:+.5f}'.format(value))
+            f.write('{:d}'.format(value))
 
     @property
     def enable(self):
