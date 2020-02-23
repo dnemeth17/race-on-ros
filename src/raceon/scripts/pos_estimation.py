@@ -76,7 +76,7 @@ class PosEstimator():
         rospy.loginfo("Image with shape {:s} received. (max, min)=({:d}, {:d})".format(str(gray.shape), gray.min(), gray.max()))        
         line_pos = self.camera_center - self.pos_estimate(gray)
         
-        error_array.append(line_pos)
+        self.error_array.append(line_pos)
         
         self.pub_middle_error.publish(line_pos)
         
