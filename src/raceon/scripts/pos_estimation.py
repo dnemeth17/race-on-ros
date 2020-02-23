@@ -44,6 +44,8 @@ class PosEstimator():
         self.error_array = []
         
         self.turning_state = 0
+        self.turning_start_right = 550
+        self.turning_start_left = 150
     
     def start(self):
         
@@ -123,21 +125,22 @@ class PosEstimator():
         
         left_pos = 0 if line_left == None else int(line_left)
         right_pos = 0 if line_right == None else int(line_right)
-        self.pub_line_left.publish(left_pos)
-        self.pub_line_right.publish(right_pos)
+        #self.pub_line_left.publish(left_pos)
+        #self.pub_line_right.publish(right_pos)
         
         if self.turning_state == 0 and (line_left < 5 or self.previous_right < 5):
             self.turning_state = -1
+            self.turning_start_right = line_right
         if self.turning_state == -1:
             # were coming out of the turn
-            if line_right and self.previous_right < line_right:
+            if line_right and line_right > self.turning_start_right:
                 self.turning_state = 0
             
         if self.turning_state == -1:
             if not line_right:
                 line_right = self.previous_right
             line_left = line_right - self.track_width
-            line_pos    = (line_left + line_right ) // 2
+            line_pos = (line_left + line_right ) // 2
             self.previous_right = line_right
         else:
             # Evaluate the line position
@@ -160,7 +163,10 @@ class PosEstimator():
                 if self.previous_left != -1 and self.previous_right != -1:
                     line_pos = (self.previous_left + self.previous_right ) // 2   
                 rospy.loginfo("no line")
-
+                
+        
+        self.pub_line_left.publish(left_pos)
+        self.pub_line_right.publish(right_pos)
         return line_pos
 
 if __name__ == "__main__":
