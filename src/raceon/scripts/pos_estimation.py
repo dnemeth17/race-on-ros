@@ -52,6 +52,7 @@ class PosEstimator():
         self.pub_pos_track = rospy.Publisher(self.topic_name_pos_track, TrackPosition, queue_size=10)
         self.pub_line_left = rospy.Publisher("line/left", Int32, queue_size=10)
         self.pub_line_right = rospy.Publisher("line/right", Int32, queue_size=10)
+        self.pub_middle_error = rospy.Publisher("middle/error", Int32, queue_size=10)
         rospy.spin()
 
     def image_compressed_callback(self, img_msg):
@@ -74,6 +75,8 @@ class PosEstimator():
         line_pos = self.camera_center - self.pos_estimate(gray)
         
         error_array.append(line_pos)
+        
+        self.pub_middle_error.publish(line_pos)
         
         rospy.loginfo("Estimated line_pos = " + str(line_pos))
         
