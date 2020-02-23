@@ -15,6 +15,10 @@ import numpy as np
 from scipy.signal import find_peaks, butter, filtfilt
 from skimage.color import rgb2gray
 
+
+previous_left = -1
+previous_right = -1
+
 class PosEstimator():
     
     def __init__(self):
@@ -73,8 +77,6 @@ class PosEstimator():
         pos_msg.position.x = line_pos
         self.pub_pos_err.publish(pos_msg)
     
-    previous_left = -1
-    previous_right = -1
     def pos_estimate(self, I):
 
         # Select a horizontal line in the middle of the image
