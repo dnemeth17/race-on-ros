@@ -44,12 +44,12 @@ class Controller():
 
     def control_servo(self, error):
         correction = self.pid(error)
-        servo_pos = correction / MAX_CORRECTION_MAGNITUDE
+        servo_pos = correction
 
-        if servo_pos > 1:
-            servo_pos = 1
-        if servo_pos < -1:
-            servo_pos = -1
+        if servo_pos > MAX_CORRECTION_MAGNITUDE:
+            servo_pos = MAX_CORRECTION_MAGNITUDE
+        if servo_pos < -MAX_CORRECTION_MAGNITUDE:
+            servo_pos = -MAX_CORRECTION_MAGNITUDE
 
         return servo_pos
 
