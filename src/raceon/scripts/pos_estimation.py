@@ -18,6 +18,8 @@ from skimage.color import rgb2gray
 
 previous_left = -1
 previous_right = -1
+error_array = []
+
 
 class PosEstimator():
     
@@ -70,6 +72,8 @@ class PosEstimator():
         
         rospy.loginfo("Image with shape {:s} received. (max, min)=({:d}, {:d})".format(str(gray.shape), gray.min(), gray.max()))        
         line_pos = self.camera_center - self.pos_estimate(gray)
+        
+        error_array.append(line_pos)
         
         rospy.loginfo("Estimated line_pos = " + str(line_pos))
         
