@@ -46,6 +46,7 @@ class PosEstimator():
         self.turning_state = 0
         self.turning_start_right = 550
         self.turning_start_left = 150
+        self.state_buffer = 0
     
     def start(self):
         
@@ -128,14 +129,18 @@ class PosEstimator():
         #self.pub_line_left.publish(left_pos)
         #self.pub_line_right.publish(right_pos)
         
-        if self.turning_state == 0 and ((line_left and line_left < 25) or (not line_left and self.previous_left < 25)):
-            self.turning_state = -1
-            self.turning_start_right = line_right
-        if self.turning_state == -1:
-            # were coming out of the turn
-            if line_right and line_right > self.turning_start_right:
-                #self.turning_state = 0
-                pass
+        self.state_buffer += 1
+        
+        if self.state_buffer > 10:
+
+            if self.turning_state == 0 and ((line_left and line_left < 25) or (not line_left and self.previous_left < 25)):
+                self.turning_state = -1
+                self.turning_start_right = line_right
+            if self.turning_state == -1:
+                # were coming out of the turn
+                if line_right and line_right > self.turning_start_right:
+                    #self.turning_state = 0
+                    pass
             
         if self.turning_state == -1:
             if not line_right:
