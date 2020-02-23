@@ -84,6 +84,6 @@ class Car:
     def steer(self, _steer):
         _steer = self._limit(_steer, -1.0, 1.0)
         if _steer < 0:
-            self.servo.duty_cycle = self.SERVO_MID + ((self.SERVO_MID - self.SERVO_MIN) * _steer) * 1000
+            self.servo.duty_cycle = self.SERVO_MID + ((self.SERVO_MID - self.SERVO_MIN) * _steer)
         else:
-            self.servo.duty_cycle = self.SERVO_MID + ((self.SERVO_MAX - self.SERVO_MID) * _steer) * 1000
+            self.servo.duty_cycle = self.SERVO_MID + ((self.SERVO_MAX - self.SERVO_MID) * _steer)
