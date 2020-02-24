@@ -7,8 +7,8 @@ from car import Car
 
 MOTOR_PIN = 0
 SERVO_PIN = 1
-SERVO_LEFT = 1000
-SERVO_RIGHT = 2000
+SERVO_LEFT = 2000
+SERVO_RIGHT = 1000
 SERVO_MID = 1500
 
 class Actuator():
