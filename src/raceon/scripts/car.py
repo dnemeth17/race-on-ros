@@ -35,9 +35,9 @@ class Car:
         self.servo = PWM(servo_pin)
         self.servo.period = 20000000
         
-        self.SERVO_MID = servo_mid
-        self.SERVO_MIN = servo_left
-        self.SERVO_MAX = servo_right
+        self.SERVO_MID = 1500
+        self.SERVO_MIN = 1000
+        self.SERVO_MAX = 2000
 
     def _map(self, value, from_min, from_max, to_min, to_max):
         from_range = from_max - from_min
