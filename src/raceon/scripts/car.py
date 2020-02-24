@@ -35,9 +35,9 @@ class Car:
         self.servo = PWM(servo_pin)
         self.servo.period = 20000000
         
-        self.SERVO_MID = 1500
-        self.SERVO_MIN = 1000
-        self.SERVO_MAX = 2000
+        self.SERVO_MID = servo_mid
+        self.SERVO_MIN = servo_left
+        self.SERVO_MAX = servo_right
 
     def _map(self, value, from_min, from_max, to_min, to_max):
         from_range = from_max - from_min
@@ -83,9 +83,8 @@ class Car:
             self.motor.duty_cycle = self._map(_speed, 0, 1000, self.MOTOR_MIN, self.MOTOR_MAX) * 1000
 
     def steer(self, _steer):
-        rospy.loginfo("start")
-        rospy.loginfo((self.SERVO_MID * 1000) + _steer)
-        steer = (self.SERVO_MID * 1000) + _steer
+        rospy.loginfo((self.SERVO_MID * 1000) - _steer)
+        steer = (self.SERVO_MID * 1000) - _steer
         if steer > self.SERVO_MAX * 1000:
             steer = self.SERVO_MAX * 1000
         elif steer < self.SERVO_MIN * 1000:
