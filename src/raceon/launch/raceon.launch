@@ -1,5 +1,5 @@
 <launch>
-    <arg name="speed" default="190"/>
+    <arg name="speed" default="220"/>
     
     <group ns="raceon">
         <param name="topic_name_camera_image" value="camera/image" />
@@ -27,7 +27,7 @@
         <node pkg="raceon" name="control" type="control.py" output="log">
             <param name="~motor_speed" value="$(arg speed)" />
             <param name="~target" value="0" />
-            <param name="~kp" value="6000" />
+            <param name="~kp" value="7000" />
         </node>
 
         <node pkg="raceon" name="actuation" type="actuation.py" output="screen" />
