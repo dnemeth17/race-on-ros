@@ -90,5 +90,5 @@ class Car:
             steer = self.SERVO_MAX * 1000
         elif steer < self.SERVO_MIN * 1000:
             steer = self.SERVO_MIN * 1000
-        self.servo.duty_cycle = self.SERVO_MID * 1000
+        self.servo.duty_cycle = steer
         #self.servo.duty_cycle = self._limit((self.SERVO_MID * 1000) + _steer, self.SERVO_MIN * 1000, self.SERVO_MAX * 1000)
