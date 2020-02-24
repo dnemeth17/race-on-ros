@@ -44,7 +44,7 @@ class Controller():
         correction = self.pid(error)
         servo_pos = correction
 
-        return servo_pos
+        return int(servo_pos)
 
 if __name__ == "__main__":
     rospy.init_node("control")
