@@ -120,8 +120,6 @@ class PosEstimator():
         track_msg.right = 0 if line_right == None else int(line_right)
         self.pub_pos_track.publish(track_msg)
         
-        left_pos = 0 if line_left == None else int(line_left)
-        right_pos = 0 if line_right == None else int(line_right)
         #self.pub_line_left.publish(left_pos)
         #self.pub_line_right.publish(right_pos)
         
@@ -134,12 +132,12 @@ class PosEstimator():
             self.previous_right = line_right
 
         elif line_left and not line_right:
-            line_right = self.previous_right
+            line_right = line_left + self.track_wdith
             line_pos    = (line_left + line_right ) // 2
             self.previous_left = line_left
 
         elif not line_left and line_right:
-            line_left = self.previous_left
+            line_left = line_right - self.track_wdith
             line_pos    = (line_left + line_right ) // 2
             self.previous_right = line_right
         else:
@@ -148,8 +146,8 @@ class PosEstimator():
             rospy.loginfo("no line")
                 
         
-        self.pub_line_left.publish(left_pos)
-        self.pub_line_right.publish(right_pos)
+        self.pub_line_left.publish(line_left)
+        self.pub_line_right.publish(line_right)
         return line_pos
 
 if __name__ == "__main__":
