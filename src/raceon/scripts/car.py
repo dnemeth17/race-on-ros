@@ -84,7 +84,7 @@ class Car:
 
     def steer(self, _steer):
         rospy.loginfo("start")
-        rospy.loginfo(_steer)
+        rospy.loginfo((self.SERVO_MID * 1000) + _steer)
         steer = (self.SERVO_MID * 1000) + _steer
         if steer > self.SERVO_MAX * 1000:
             steer = self.SERVO_MAX * 1000
