@@ -132,12 +132,12 @@ class PosEstimator():
             self.previous_right = line_right
 
         elif line_left and not line_right:
-            line_right = line_left + self.track_wdith
+            line_right = line_left + self.track_width
             line_pos    = (line_left + line_right ) // 2
             self.previous_left = line_left
 
         elif not line_left and line_right:
-            line_left = line_right - self.track_wdith
+            line_left = line_right - self.track_width
             line_pos    = (line_left + line_right ) // 2
             self.previous_right = line_right
         else:
