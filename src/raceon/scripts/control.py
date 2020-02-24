@@ -38,6 +38,8 @@ class Controller():
         
     # TODO: Implement PID
     def pid(self, error):
+        if error > 30:
+            return error * self.kp * 1.5
         return error * self.kp
 
     def control_servo(self, error):
