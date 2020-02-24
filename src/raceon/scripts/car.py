@@ -82,6 +82,7 @@ class Car:
             self.motor.duty_cycle = self._map(_speed, 0, 1000, self.MOTOR_MIN, self.MOTOR_MAX) * 1000
 
     def steer(self, _steer):
+        rospy.loginfo(_steer)
         steer = (self.SERVO_MID * 1000) + _steer
         if steer > self.SERVO_MAX * 1000:
             steer = self.SERVO_MAX * 1000
