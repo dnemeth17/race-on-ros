@@ -38,6 +38,9 @@ class Car:
         self.SERVO_MID = servo_mid
         self.SERVO_MIN = servo_left
         self.SERVO_MAX = servo_right
+        
+        
+        self.pub_turn_speed = rospy.Publisher("turn_speed", Int32, queue_size=10)
 
     def _map(self, value, from_min, from_max, to_min, to_max):
         from_range = from_max - from_min
@@ -89,5 +92,7 @@ class Car:
             steer = self.SERVO_MAX * 1000
         elif steer < self.SERVO_MIN * 1000:
             steer = self.SERVO_MIN * 1000
+        speed = int((_steer / (5000 * 1000)) * 100); 
+        self.pub_turn_speed.publish(speed);
         self.servo.duty_cycle = int(steer)
         #self.servo.duty_cycle = self._limit((self.SERVO_MID * 1000) + _steer, self.SERVO_MIN * 1000, self.SERVO_MAX * 1000)
