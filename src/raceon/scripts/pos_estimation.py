@@ -93,7 +93,7 @@ class PosEstimator():
     def pos_estimate(self, I):
         scan_line = self.scan_line;
         if self.previous_error:
-            scan_line -= int(abs(self.previous_error) / 25) * 50;
+            scan_line -= int((abs(self.previous_error) / 100) * 50);
         if scan_line < self.scan_line - 50:
             scan_line = self.scan_line - 50;
         # Select a horizontal line in the image
