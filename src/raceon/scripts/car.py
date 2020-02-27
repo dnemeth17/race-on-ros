@@ -93,7 +93,7 @@ class Car:
             steer = self.SERVO_MAX * 1000
         elif steer < self.SERVO_MIN * 1000:
             steer = self.SERVO_MIN * 1000
-        speed = int((_steer / (5000 * 100)) * 100); 
+        speed = int((steer/2000000) * 100); 
         self.pub_turn_speed.publish(speed);
         self.servo.duty_cycle = int(steer)
         #self.servo.duty_cycle = self._limit((self.SERVO_MID * 1000) + _steer, self.SERVO_MIN * 1000, self.SERVO_MAX * 1000)
