@@ -95,8 +95,8 @@ class PosEstimator():
         scan_line = self.scan_line;
         if self.previous_error:
             scan_line += int((abs(self.previous_error) / 100) * 50);
-        if scan_line > self.scan_line + 50:
-            scan_line = self.scan_line + 50;
+        if scan_line > self.scan_line + 150:
+            scan_line = self.scan_line + 150;
         self.pub_scan_line.publish(scan_line);
         # Select a horizontal line in the image
         L = I[scan_line, :]
