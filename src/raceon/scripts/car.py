@@ -1,6 +1,7 @@
 import time
 import rospy
 from pwm import PWM
+from std_msgs.msg import Int32
 
 class Car:
     '''
