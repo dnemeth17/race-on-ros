@@ -38,7 +38,7 @@ class Controller():
         
     # TODO: Implement PID
     def pid(self, error):
-        if error > 30:
+        if abs(error) > 15:
             return error * self.kp * 5
         return error * self.kp
 
