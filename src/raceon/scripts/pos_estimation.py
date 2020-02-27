@@ -57,6 +57,7 @@ class PosEstimator():
         self.pub_line_left = rospy.Publisher("line/left", Int32, queue_size=10)
         self.pub_line_right = rospy.Publisher("line/right", Int32, queue_size=10)
         self.pub_middle_error = rospy.Publisher("middle/error", Int32, queue_size=10)
+        self.pub_scan_line = rospy.Publisher("scan_line", Int32, queue_size=10)
         rospy.spin()
 
     def image_compressed_callback(self, img_msg):
@@ -96,6 +97,7 @@ class PosEstimator():
             scan_line += int((abs(self.previous_error) / 100) * 50);
         if scan_line > self.scan_line + 50:
             scan_line = self.scan_line + 50;
+        self.pub_scan_line.publish(scan_line);
         # Select a horizontal line in the image
         L = I[scan_line, :]
 
