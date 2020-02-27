@@ -41,6 +41,7 @@ class PosEstimator():
         
         self.previous_left = 150
         self.previous_right = 550
+        self.previous_error = 0;
         self.error_array = []
         
     
