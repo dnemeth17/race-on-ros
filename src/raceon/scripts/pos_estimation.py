@@ -79,6 +79,8 @@ class PosEstimator():
         
         self.error_array.append(line_pos)
         
+        self.previous_error = line_pos;
+        
         self.pub_middle_error.publish(line_pos)
         
         rospy.loginfo("Estimated line_pos = " + str(line_pos))
@@ -88,9 +90,13 @@ class PosEstimator():
         self.pub_pos_err.publish(pos_msg)
     
     def pos_estimate(self, I):
-
-        # Select a horizontal line in the middle of the image
-        L = I[self.scan_line, :]
+        scan_line = self.scan_line;
+        if self.previous_error:
+            scan_line += (abs(self.previous_error) / 25) * 50;
+        if scan_line > self.scan_line + 50:
+            scan_line = self.scan_line + 50;
+        # Select a horizontal line in the image
+        L = I[scan_line, :]
 
         # Smooth the transitions so we can detect the peaks 
         Lf = filtfilt(self.butter_b, self.butter_a, L)
@@ -144,7 +150,7 @@ class PosEstimator():
             if self.previous_left != -1 and self.previous_right != -1:
                 line_pos = (self.previous_left + self.previous_right ) // 2   
             rospy.loginfo("no line")
-                
+        
         
         self.pub_line_left.publish(line_left)
         self.pub_line_right.publish(line_right)
